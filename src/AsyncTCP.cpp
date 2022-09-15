@@ -146,40 +146,6 @@ static inline bool _prepend_async_event(lwip_event_packet_t ** e)
 	return ( e && _async_queue && ( xQueueSendToFront( _async_queue, e, ASYNC_TCP_EVENTS_QUEUE_SEND_TMO ) == pdPASS ) );
 }
 
-// static inline bool _send_async_event( lwip_event_packet_t ** e )
-// {
-// 	if( !e || !_async_queue )
-// 	{
-// 		log_e("_send_async_event 1");
-// 		return false;
-// 	}
-// 	else
-// 	{
-// 		// if( xQueueSend(_async_queue, e, portMAX_DELAY) == pdPASS )
-// 		if( xQueueSend(_async_queue, e, ASYNC_TCP_EVENTS_QUEUE_SEND_TMO ) == pdPASS )
-// 			return true;
-// 	}
-// 	log_e("_send_async_event 2");
-// 	return false;
-// }
-
-// static inline bool _prepend_async_event( lwip_event_packet_t ** e )
-// {
-// 	if( !e || !_async_queue )
-// 	{
-// 		log_e("_prepend_async_event 1");
-// 		return false;
-// 	}
-// 	else
-// 	{
-// 		// if( xQueueSendToFront(_async_queue, e, portMAX_DELAY) == pdPASS )
-// 		if( xQueueSendToFront(_async_queue, e, ASYNC_TCP_EVENTS_QUEUE_SEND_TMO) == pdPASS )
-// 			return true;
-// 	}
-// 	log_e("_prepend_async_event 2");
-// 	return false;
-// }
-
 static bool _remove_events_with_arg(void * arg)
 {
     lwip_event_packet_t * first_packet = NULL;
