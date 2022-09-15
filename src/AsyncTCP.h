@@ -30,10 +30,42 @@ extern "C" {
     #include "lwip/pbuf.h"
 }
 
+/**
+ * @note: Modifyed 13-09-2022 MILACO:
+ * Added ASYNC_TCP_TASK_STACK_DEEPTH and ASYNC_TCP_TASK_PRIORITY defines
+ */
+#define ASYNC_TCP_TASK_STACK_DEEPTH           ( 8192 * 2 )  
+#define ASYNC_TCP_TASK_PRIORITY               (3)
+
+/**
+ * @note: Modifyed 13-09-2022 MILACO:
+ * Added ASYNC_TCP_EVENTS_QUEUE_SZ.
+ * Defines the queue size for LWIP events handling.
+ * @note: Originally was internally set to 32.
+ * But, in the case of long time packets (witch has some long payload data),
+ * it may produce a long time queue stuck wait fo revent dispatch.
+ * So this may produce the TWDG task overflow for the internal 'async_tcp' task.
+ * Enlarging this queue will help to avoid the issue.
+ */
+#define ASYNC_TCP_EVENTS_QUEUE_SZ             (32)
+
+
+/**
+ * @note: Modifyed 13-09-2022 MILACO:
+ * Added ASYNC_TCP_EVENTS_QUEUE_SEND_TMO.
+ * Timeout for TCP events submit to queue.
+ * @note: Originally was internally set to portMAX_DELAY.
+ * But, in the case of long time packets (witch has some long payload data),
+ * it may produce a long time queue stuck wait fo revent dispatch.
+ * So this may produce the TWDG task overflow for the internal 'async_tcp' task.
+ * Enlarging this queue will help to avoid the issue.
+ */
+#define ASYNC_TCP_EVENTS_QUEUE_SEND_TMO       pdMS_TO_TICKS(1000)
+
 //If core is not defined, then we are running in Arduino or PIO
 #ifndef CONFIG_ASYNC_TCP_RUNNING_CORE
-#define CONFIG_ASYNC_TCP_RUNNING_CORE -1 //any available core
-#define CONFIG_ASYNC_TCP_USE_WDT 1 //if enabled, adds between 33us and 200us per event
+  #define CONFIG_ASYNC_TCP_RUNNING_CORE -1    //any available core
+  #define CONFIG_ASYNC_TCP_USE_WDT 1          //if enabled, adds between 33us and 200us per event
 #endif
 
 class AsyncClient;
